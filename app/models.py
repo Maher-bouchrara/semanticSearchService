@@ -1,13 +1,13 @@
-# models.py — Modèles Pydantic correspondant exactement au JSON réel
+# models.py - Modeles Pydantic correspondant exactement au JSON reel
 
 from pydantic import BaseModel
 from typing import Optional, List
 
 print("ena models.py")
 
-# ─────────────────────────────────────────
-# SOUS-MODÈLES (objets imbriqués)
-# ─────────────────────────────────────────
+# ------------------------------------
+# SOUS-MODELES (objets imbriques)
+# ------------------------------------
 
 class Domain(BaseModel):
     """Un domaine de recherche (ex: Intelligence Artificielle)"""
@@ -17,7 +17,7 @@ class Domain(BaseModel):
 
     class Config:
         # Ignore les champs inconnus comme "hibernateLazyInitializer"
-        # Sans ça, Pydantic lèverait une erreur sur ce champ Java
+        # Sans ca, Pydantic leverait une erreur sur ce champ Java
         extra = "ignore"
 
 
@@ -36,21 +36,21 @@ class Researcher(BaseModel):
         extra = "ignore"
 
 
-# ─────────────────────────────────────────
-# MODÈLE PRINCIPAL — UNE PUBLICATION
-# ─────────────────────────────────────────
+# ------------------------------------
+# MODELE PRINCIPAL - UNE PUBLICATION
+# ------------------------------------
 
 class Publication(BaseModel):
     """
-    Représente une publication de recherche complète.
-    Correspond exactement à un objet dans data[] du JSON.
+    Represente une publication de recherche complete.
+    Correspond exactement a un objet dans data[] du JSON.
     """
     id: int
     title: str
     abstractText: str
     keywords: Optional[str] = None
-    doi: Optional[str] = None           # Peut être null
-    pdfUrl: Optional[str] = None        # Peut être null (ex: publication 5)
+    doi: Optional[str] = None           # Peut etre null
+    pdfUrl: Optional[str] = None        # Peut etre null (ex: publication 5)
     journal: Optional[str] = None
     publicationDate: Optional[str] = None
     status: Optional[str] = None        # "PUBLISHED" ou "DRAFT"
@@ -63,14 +63,14 @@ class Publication(BaseModel):
         extra = "ignore"
 
 
-# ─────────────────────────────────────────
-# WRAPPER — LA RÉPONSE COMPLÈTE DE TON API
-# ─────────────────────────────────────────
+# ------------------------------------
+# WRAPPER - LA REPONSE COMPLETE DE TON API
+# ------------------------------------
 
 class PublicationsApiResponse(BaseModel):
     """
-    Le JSON complet retourné par ton endpoint getPublications.
-    On l'utilise pour parser la réponse entière proprement.
+    Le JSON complet retourne par ton endpoint getPublications.
+    On l'utilise pour parser la reponse entiere proprement.
     """
     success: bool
     message: str
@@ -78,30 +78,38 @@ class PublicationsApiResponse(BaseModel):
     timestamp: str
 
 
-# ─────────────────────────────────────────
-# INPUT DE NOTRE API — POST /search
-# ─────────────────────────────────────────
+# ------------------------------------
+# INPUT DE NOTRE API - POST /search
+# ------------------------------------
 
 class SearchRequest(BaseModel):
     """
-    Ce que l'utilisateur envoie à notre API.
-    Il envoie la query + la liste complète des publications.
+    Ce que l'utilisateur envoie a notre API.
+    Il envoie la query + la liste complete des publications.
     """
     query: str
     publications: List[Publication]
 
 
-# ─────────────────────────────────────────
-# OUTPUT DE NOTRE API — Résultats classés
-# ─────────────────────────────────────────
+class SearchFromApiRequest(BaseModel):
+    """
+    Recherche semantique a partir d'un endpoint externe.
+    """
+    query: str
+    endpointUrl: str = "example/api/getpubs"
+
+
+# ------------------------------------
+# OUTPUT DE NOTRE API - Resultats classes
+# ------------------------------------
 
 class PublicationResult(BaseModel):
-    """Un résultat dans la liste finale classée"""
+    """Un resultat dans la liste finale classee"""
     id: int
     title: str
     score: float
 
 
 class SearchResponse(BaseModel):
-    """La réponse finale de POST /search"""
+    """La reponse finale de POST /search"""
     results: List[PublicationResult]
