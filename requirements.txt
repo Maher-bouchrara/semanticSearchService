@@ -1,25 +1,24 @@
 # ── Web framework ──────────────────────────────────────────
-fastapi==0.115.12          # The web framework we use to build the API
-uvicorn[standard]==0.34.0  # The server that runs FastAPI
+fastapi
+uvicorn[standard]
 
 # ── Data validation ────────────────────────────────────────
-pydantic==2.11.3           # Validates input/output shapes (used by FastAPI)
+pydantic
 
 # ── HTTP requests ──────────────────────────────────────────
-requests==2.32.3           # Downloads PDFs from URLs
+requests
 
 # ── PDF text extraction ────────────────────────────────────
-PyMuPDF==1.25.5            # Reads and extracts text from PDF files
-                           # Imported in code as: import fitz
+PyMuPDF
 
 # ── Semantic embeddings ────────────────────────────────────
-sentence-transformers==4.1.0   # Converts text into vectors (embeddings)
-torch==2.6.0                   # Required by sentence-transformers (deep learning engine)
-transformers==4.51.3           # Required by sentence-transformers (model loading)
+sentence-transformers
+torch
+transformers
 
 # ── Math / similarity ──────────────────────────────────────
-numpy==2.2.4               # Used for cosine similarity calculation
-scikit-learn==1.6.1        # Also used for cosine similarity (cleaner API)
+numpy
+scikit-learn
 
 # ── Environment variables ─────────────────────────────────
-python-dotenv==1.1.0
+python-dotenv
