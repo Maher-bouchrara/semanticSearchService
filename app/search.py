@@ -163,8 +163,7 @@ def semantic_search(
         print(f"  ⭐ Score : {score:.4f}\n")
 
         results.append(PublicationResult(
-            id=publication.id,
-            title=publication.title,
+            **publication.dict(),
             score=round(score, 4)   # Arrondir à 4 décimales
         ))
 

@@ -1,6 +1,7 @@
 # main.py - Point d'entree final avec l'endpoint /search complet
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import requests
 
 from app.models import PublicationsApiResponse, SearchFromApiRequest, SearchRequest, SearchResponse
@@ -10,6 +11,15 @@ app = FastAPI(
     title="Semantic Search API",
     description="Recherche semantique sur des publications scientifiques",
     version="1.0.0"
+)
+
+# CORS (pour permettre l'appel depuis un frontend / autre projet)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

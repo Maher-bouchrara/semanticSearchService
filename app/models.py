@@ -1,7 +1,7 @@
 # models.py - Modeles Pydantic correspondant exactement au JSON reel
 
-from pydantic import BaseModel
-from typing import Optional, List
+from pydantic import BaseModel, Field
+from typing import Optional, List, Any
 
 print("ena models.py")
 
@@ -30,7 +30,7 @@ class Researcher(BaseModel):
     photoUrl: Optional[str] = None
     orcidId: Optional[str] = None
     createdAt: Optional[str] = None
-    domains: Optional[List[Domain]] = []
+    domains: List[Domain] = Field(default_factory=list)
 
     class Config:
         extra = "ignore"
@@ -51,13 +51,16 @@ class Publication(BaseModel):
     keywords: Optional[str] = None
     doi: Optional[str] = None           # Peut etre null
     pdfUrl: Optional[str] = None        # Peut etre null (ex: publication 5)
+    imageUrl: Optional[str] = None
     journal: Optional[str] = None
+    embedding: Optional[List[float]] = None
     publicationDate: Optional[str] = None
     status: Optional[str] = None        # "PUBLISHED" ou "DRAFT"
     createdAt: Optional[str] = None
     updatedAt: Optional[str] = None
     domain: Optional[Domain] = None
-    researchers: Optional[List[Researcher]] = []
+    interactions: List[Any] = Field(default_factory=list)
+    researchers: List[Researcher] = Field(default_factory=list)
 
     class Config:
         extra = "ignore"
@@ -102,11 +105,8 @@ class SearchFromApiRequest(BaseModel):
 # ------------------------------------
 # OUTPUT DE NOTRE API - Resultats classes
 # ------------------------------------
-
-class PublicationResult(BaseModel):
-    """Un resultat dans la liste finale classee"""
-    id: int
-    title: str
+class PublicationResult(Publication):
+    """Une publication complete avec son score de pertinence"""
     score: float
 
 
